@@ -1,13 +1,16 @@
 //nếu env là trên heroku thì k cần require dotenv
 if(process.env.NODE_ENV !=='production'){
-  require('dotenv')
+  require('dotenv').config()
 }
+console.log('DB_URL',process.env.DB_URL);
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+//Routes:
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -15,6 +18,7 @@ var usersRouter = require('./routes/users');
 //kết nối mongoose
 var mongoose=require('mongoose');
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -30,15 +34,60 @@ app.use(expressLayouts);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//MIDDLEWARE
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/authors', require('./routes/authors'));
+
 app.set('layout', 'layouts/layout');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
