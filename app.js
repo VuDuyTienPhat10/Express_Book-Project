@@ -1,3 +1,4 @@
+//nếu env là trên heroku thì k cần require dotenv
 if(process.env.NODE_ENV !=='production'){
   require('dotenv')
 }
